@@ -36,20 +36,19 @@ setArch() {
   fi
 }
 
-initialiseApt() {
+aptPackages() {
   apt update
   apt upgrade --yes
   apt install --yes \
     apt-transport-https \
     ca-certificates \
     curl \
+    git-crypt \
     lsb-release
-}
-
-aptPackages() {
-  apt install --yes \
     python3 \
-    python3-pip
+    python3-pip \
+    unzip \
+    zip
 }
 
 pipPackages() {
@@ -124,7 +123,6 @@ cleanup() {
 # Main
 ####################
 setArch
-initialiseApt
 aptPackages
 pipPackages
 awsCli
