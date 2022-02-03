@@ -124,15 +124,15 @@ cleanup() {
 # Main
 ####################
 setArch
-# initialiseApt
-# aptPackages
-# pipPackages
-# awsCli
-# kubectl
-# helm
-# kubeLinter
-# terraform
-# terragrunt
-# tflint
-# tfsec
-# cleanup
+initialiseApt
+aptPackages
+pipPackages
+awsCli
+kubectl
+helm
+kubeLinter
+terraform
+terragrunt
+tflint
+tfsec
+cleanup
