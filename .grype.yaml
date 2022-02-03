@@ -1,0 +1,3 @@
+ignore:
+  - package:
+      location: /usr/local/bin/terragrunt
