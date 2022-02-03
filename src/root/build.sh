@@ -15,6 +15,7 @@ AWSCLI_VERSION="2.4.14" # https://github.com/aws/aws-cli/blob/v2/CHANGELOG.rst
 KUBECTL_VERSION="v1.23.3" # https://storage.googleapis.com/kubernetes-release/release/stable.txt
 KUBELINTER_VERSION="0.2.5" # https://github.com/stackrox/kube-linter/releases
 HELM_VERSION="v3.8.0" # https://github.com/helm/helm/releases
+KD_VERSION="v1.19.13" # https://github.com/UKHomeOffice/kd/releases
 TERRAFORM_VERSION="1.1.4" # https://github.com/hashicorp/terraform/releases
 TERRAGRUNT_VERSION="v0.36.1" # https://github.com/gruntwork-io/terragrunt/releases
 TFLINT_VERSION="v0.34.1" # https://github.com/terraform-linters/tflint/releases
@@ -44,7 +45,7 @@ aptPackages() {
     ca-certificates \
     curl \
     git-crypt \
-    lsb-release
+    lsb-release \
     python3 \
     python3-pip \
     unzip \
@@ -77,6 +78,12 @@ helm() {
   tar --gzip --extract --verbose --file helm-${HELM_VERSION}-linux-${ALT_ARCH}.tar.gz
   mv linux-${ALT_ARCH}/helm /usr/local/bin/helm
   rm --force --recursive linux-${ALT_ARCH} helm-${HELM_VERSION}-linux-${ALT_ARCH}.tar.gz
+}
+
+kd() {
+  curl --location https://github.com/UKHomeOffice/kd/releases/download/v${KD_VERSION}/kd_linux_amd64 \
+    --output /usr/local/bin/kd
+  chmod +x /usr/local/bin/kd
 }
 
 kubeLinter() {
