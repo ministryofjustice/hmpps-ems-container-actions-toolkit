@@ -1,0 +1,62 @@
+---
+name: "Build and Push Latest"
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  build-push-latest:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Cosign
+        id: install_cosign
+        uses: sigstore/cosign-installer@main
+
+      - name: Set up QEMU
+        id: setup_qemu
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Buildx
+        id: setup_buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to GitHub Container Registry
+        id: ghcr_login
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and Publish Containers to GitHub Container Registry
+        id: build_publish
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Containerfile
+          platforms: linux/amd64
+          push: true
+          tags: ghcr.io/ministryofjustice/hmpps-ems-actions-toolkit:latest
+
+      - name: Sign Containers
+        id: sign_containers
+        run: |
+          cosign sign --recursive ghcr.io/ministryofjustice/hmpps-ems-actions-toolkit:latest
+        env:
+          COSIGN_EXPERIMENTAL: 1
+          
+      - name: Verify Containers
+        id: verify_containers
+        run: |
+          cosign verify ghcr.io/ministryofjustice/hmpps-ems-actions-toolkit:latest
+        env:
+          COSIGN_EXPERIMENTAL: 1
