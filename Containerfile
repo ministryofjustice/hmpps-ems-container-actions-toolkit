@@ -9,4 +9,4 @@ LABEL org.opencontainers.image.authors="HMPPS EMS Platform Team (hmpps-ems-platf
 
 COPY src/root/build.sh /root/build.sh
 
-RUN /root/build.sh
+RUN bash /root/build.sh
